@@ -1,0 +1,40 @@
+name: Build and Upload Flatpak
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Flatpak
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y flatpak-builder flatpak
+
+    - name: Add Flathub repository
+      run: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+    - name: Install GNOME SDK
+      run: flatpak install -y flathub org.gnome.Sdk//47 org.gnome.Platform//47
+
+    - name: Build Flatpak
+      run: flatpak-builder --force-clean --repo=repo build-dir io.github.celluloid_player.Celluloid.yaml
+
+    - name: Create Flatpak bundle
+      run: flatpak build-bundle repo celluloid.flatpak io.github.celluloid_player.Celluloid
+
+    - name: Upload Flatpak artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: celluloid-flatpak
+        path: celluloid.flatpak
