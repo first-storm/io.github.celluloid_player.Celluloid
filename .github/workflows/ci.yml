@@ -35,7 +35,7 @@ jobs:
       run: flatpak build-bundle repo celluloid.flatpak io.github.celluloid_player.Celluloid
 
     - name: Upload Flatpak artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: celluloid-flatpak
         path: celluloid.flatpak
