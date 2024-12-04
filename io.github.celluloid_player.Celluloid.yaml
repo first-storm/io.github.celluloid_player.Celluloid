@@ -57,6 +57,7 @@ modules:
           - -Dbuild-date=false
           - -Dalsa=disabled
           - -Dlua=enabled
+          - -Dx11=disabled
         sources:
           - type: archive
             url: https://github.com/mpv-player/mpv/archive/v0.39.0.tar.gz
